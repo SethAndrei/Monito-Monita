@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monito Monita</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#182920;
+    --ink-2:#22392c;
+    --paper:#efe6d0;
+    --paper-2:#e4d9bb;
+    --kraft:#c9a15a;
+    --cranberry:#8c2f39;
+    --cranberry-dark:#712530;
+    --pine:#3b5d45;
+    --text-on-paper:#2a2418;
+    --text-on-ink:#f3ecd9;
+    --muted-on-ink:#a9bdae;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    background-image:
+      radial-gradient(ellipse at 20% -10%, rgba(201,161,90,0.10), transparent 55%),
+      radial-gradient(ellipse at 90% 10%, rgba(140,47,57,0.10), transparent 50%);
+    color:var(--text-on-ink);
+    font-family:'Work Sans', sans-serif;
+    min-height:100vh;
+    line-height:1.5;
+  }
+  h1,h2,h3,.serif{ font-family:'Fraunces', serif; }
+  a{ color:inherit; }
+
+  .wrap{ max-width:640px; margin:0 auto; padding:48px 20px 80px; }
+
+  header.top{ text-align:center; margin-bottom:40px; }
+  header.top .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--kraft); font-size:14px; letter-spacing:.02em; margin-bottom:6px;
+  }
+  header.top .eyebrow svg{ width:16px; height:16px; }
+  header.top h1{
+    font-size:42px; font-weight:600; margin:0; color:var(--text-on-ink);
+    font-variation-settings:'opsz' 40;
+  }
+  header.top p{ color:var(--muted-on-ink); margin-top:8px; font-size:15px; }
+
+  .tag{
+    position:relative;
+    background:var(--paper);
+    color:var(--text-on-paper);
+    padding:22px 26px 22px 40px;
+    margin:0 0 18px 10px;
+    clip-path: polygon(22px 0, 100% 0, 100% 100%, 22px 100%, 0 50%);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  }
+  .tag::before{
+    content:'';
+    position:absolute; left:10px; top:50%; transform:translateY(-50%);
+    width:9px; height:9px; border-radius:50%;
+    background:var(--ink);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.4);
+  }
+  .tag .tag-string{
+    position:absolute; left:-10px; top:calc(50% - 1px);
+    width:20px; height:2px; background:var(--kraft);
+  }
+  .tag h3{ margin:0 0 6px; font-size:19px; font-weight:600; }
+  .tag p{ margin:0; font-size:14.5px; white-space:pre-wrap; }
+  .tag .meta{ font-size:12.5px; color:#6b5f45; margin-top:8px; }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--cranberry); color:#fbf3e5; border:none;
+    padding:12px 20px; font-size:15px; font-weight:500; font-family:inherit;
+    cursor:pointer; border-radius:3px;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .btn:hover{ background:var(--cranberry-dark); }
+  .btn:active{ transform:translateY(1px); }
+  .btn.ghost{
+    background:transparent; color:var(--muted-on-ink);
+    border:1px solid rgba(169,189,174,0.35);
+  }
+  .btn.ghost:hover{ background:rgba(255,255,255,0.05); color:var(--text-on-ink); }
+  .btn.pine{ background:var(--pine); }
+  .btn.pine:hover{ background:#2c4735; }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .btn.full{ width:100%; }
+
+  input[type=text], input[type=password], textarea{
+    width:100%; font-family:inherit; font-size:15px;
+    background:var(--paper); color:var(--text-on-paper);
+    border:1px solid var(--paper-2); border-radius:3px;
+    padding:12px 14px;
+  }
+  textarea{ resize:vertical; min-height:110px; }
+  label{ display:block; font-size:13px; color:var(--muted-on-ink); margin-bottom:6px; }
+
+  .card{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:6px;
+    padding:26px;
+    margin-bottom:22px;
+  }
+  .card h2{ margin:0 0 14px; font-size:22px; font-weight:600; }
+  .field{ margin-bottom:14px; }
+  .tabs{ display:flex; gap:8px; margin-bottom:18px; }
+  .tabs .tab{
+    flex:1; text-align:center; padding:10px; border-radius:3px; cursor:pointer;
+    background:rgba(255,255,255,0.04); color:var(--muted-on-ink); font-size:14px; font-weight:500;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .tabs .tab.active{ background:var(--cranberry); color:#fbf3e5; border-color:var(--cranberry); }
+
+  .divider{ height:1px; background:rgba(255,255,255,0.08); margin:34px 0; }
+  .section-label{ font-size:13px; color:var(--kraft); margin-bottom:14px; font-family:'Work Sans'; }
+  .empty{ color:var(--muted-on-ink); font-size:14px; padding:20px 0; text-align:center; }
+  .msg{ font-size:14px; margin-top:10px; }
+  .msg.error{ color:#e6a3a8; }
+  .msg.ok{ color:#a7d6b5; }
+  .hidden{ display:none !important; }
+
+  .match-reveal{ text-align:center; padding:36px 20px; }
+  .match-reveal .to{ color:var(--muted-on-ink); font-size:14px; margin-bottom:6px; }
+  .match-reveal .name{ font-size:36px; margin:0 0 18px; }
+
+  .admin-row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.06);
+    gap:12px;
+  }
+  .admin-row:last-child{ border-bottom:none; }
+  .admin-row .name{ font-weight:600; }
+  .admin-row .arrow{ color:var(--kraft); font-size:13px; }
+  .admin-row .wish{ font-size:13px; color:var(--muted-on-ink); margin-top:4px; max-width:340px; }
+
+  footer.foot{ text-align:center; color:var(--muted-on-ink); font-size:13px; margin-top:50px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      <span id="event-name">Monito Monita</span>
+    </div>
+    <h1>Who's got who?</h1>
+    <p id="status-line">Loading...</p>
+  </header>
+
+  <!-- ============ HOME VIEW ============ -->
+  <div id="view-home" class="hidden">
+
+    <div class="card" id="auth-card">
+      <div class="tabs">
+        <div class="tab active" id="tab-signup" onclick="switchAuthTab('signup')">Create account</div>
+        <div class="tab" id="tab-login" onclick="switchAuthTab('login')">Log in</div>
+      </div>
+
+      <div class="field">
+        <label for="auth-username">Username</label>
+        <input type="text" id="auth-username" placeholder="e.g. frostyfalcon" maxlength="40">
+      </div>
+      <div class="field">
+        <label for="auth-passcode" id="auth-passcode-label">Create a passcode (min 4 characters)</label>
+        <input type="password" id="auth-passcode" placeholder="Passcode">
+      </div>
+      <button class="btn full" id="auth-submit-btn">Create account</button>
+      <div class="msg" id="auth-msg"></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label">📌 Bulletin board</div>
+    <div id="bulletin-list"></div>
+  </div>
+
+  <!-- ============ MY PAGE VIEW ============ -->
+  <div id="view-mypage" class="hidden">
+    <div class="card">
+      <h2 id="mypage-greeting">Hey there</h2>
+
+      <div id="reveal-locked" class="match-reveal hidden">
+        <div class="to">Your match is being kept secret until the draw</div>
+        <div class="name">🎁 ???</div>
+      </div>
+
+      <div id="reveal-open" class="match-reveal hidden">
+        <div class="to">You're the monito/monita of</div>
+        <div class="name serif" id="match-name">—</div>
+      </div>
+
+      <div id="match-wishlist-box" class="tag hidden" style="margin-left:0;">
+        <div class="tag-string"></div>
+        <h3>Their wishlist</h3>
+        <p id="match-wishlist"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your wishlist</h2>
+      <label for="wishlist-input">What would you like to receive? Give hints — sizes, colors, favorites.</label>
+      <textarea id="wishlist-input" placeholder="e.g. Anything cozy — I love candles, mugs, and mystery novels."></textarea>
+      <div style="margin-top:12px;">
+        <button class="btn" id="save-wishlist-btn">Save wishlist</button>
+      </div>
+      <div class="msg" id="wishlist-msg"></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label">📌 Bulletin board</div>
+    <div id="bulletin-list-2"></div>
+
+    <p style="text-align:center; margin-top:30px;">
+      <a class="btn ghost" href="javascript:void(0)" onclick="goHome()">Log out</a>
+    </p>
+  </div>
+
+  <!-- ============ ADMIN GATE ============ -->
+  <div id="view-admin-gate" class="hidden">
+    <div class="card">
+      <h2>Admin access</h2>
+      <label for="passcode-input">Enter the admin passcode</label>
+      <div style="display:flex; gap:10px;">
+        <input type="password" id="passcode-input" placeholder="Passcode">
+        <button class="btn" id="admin-login-btn" style="flex:0 0 auto;">Enter</button>
+      </div>
+      <div class="msg" id="admin-login-msg"></div>
+    </div>
+  </div>
+
+  <!-- ============ ADMIN DASHBOARD ============ -->
+  <div id="view-admin" class="hidden">
+    <div class="card">
+      <h2>Draw control</h2>
+      <p id="admin-draw-status" style="color:var(--muted-on-ink); font-size:14px;"></p>
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <button class="btn pine" id="draw-btn">🎲 Draw names</button>
+        <button class="btn ghost" id="reset-draw-btn">Reset draw</button>
+      </div>
+      <div class="msg" id="draw-msg"></div>
+    </div>
+
+    <div class="card">
+      <h2>Participants (<span id="participant-count">0</span>)</h2>
+      <div id="admin-participants"></div>
+    </div>
+
+    <div class="card">
+      <h2>Bulletin board</h2>
+      <label for="bulletin-input">Post a rule or announcement</label>
+      <textarea id="bulletin-input" placeholder="e.g. Budget is ₱500. Reveal party is Dec 20!" style="min-height:70px;"></textarea>
+      <div style="margin-top:10px;">
+        <button class="btn" id="post-bulletin-btn">Post</button>
+      </div>
+      <div class="msg" id="bulletin-admin-msg"></div>
+      <div class="divider"></div>
+      <div id="admin-bulletin-list"></div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    🎄 Monito Monita — a gift-tag for every gift-giver.
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   CONFIG — set these two values before you deploy this page
+   ========================================================= */
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxQdumeGw0gmHo9dsBYt4VEN2mhllyHRjZ9_VhxDC9aPHLCYUBRrlKH85Pvu0dJBxax/exec';
+const ADMIN_TOKEN = 'admin'; // secret used as ?admin=THIS_VALUE in the URL
+/* ========================================================= */
+
+const STORAGE_KEY = 'monitoMonitaSession';
+let ADMIN_PASSCODE = null;
+const params = new URLSearchParams(window.location.search);
+
+function $(id){ return document.getElementById(id); }
+function show(id){ $(id).classList.remove('hidden'); }
+function hide(id){ $(id).classList.add('hidden'); }
+
+// GET requests are cache-busted and forced fresh — Apps Script responses
+// were getting cached by the browser, making updates look "missing" until
+// the cache expired (sometimes up to a day later).
+async function apiGet(action, extra){
+  const qs = new URLSearchParams({ action, _: Date.now(), ...(extra||{}) });
+  const res = await fetch(`${WEB_APP_URL}?${qs.toString()}`, { cache: 'no-store' });
+  return res.json();
+}
+async function apiPost(action, payload){
+  const res = await fetch(WEB_APP_URL, {
+    method:'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
+    cache: 'no-store',
+    body: JSON.stringify({ action, ...(payload||{}) })
+  });
+  return res.json();
+}
+
+function escapeHtml(str){
+  return (str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function formatDate(d){
+  try { return new Date(d).toLocaleDateString(undefined, { month:'short', day:'numeric' }); }
+  catch(e){ return ''; }
+}
+
+function renderBulletin(items, containerId){
+  const el = $(containerId);
+  if (!items.length){ el.innerHTML = '<div class="empty">No announcements yet.</div>'; return; }
+  el.innerHTML = items.map(b => `
+    <div class="tag">
+      <div class="tag-string"></div>
+      <p>${escapeHtml(b.message)}</p>
+      <div class="meta">${formatDate(b.date)}</div>
+    </div>
+  `).join('');
+}
+
+/* ---------------- ROUTING ---------------- */
+async function init(){
+  if (params.get('admin') === ADMIN_TOKEN){
+    show('view-admin-gate');
+    $('status-line').textContent = 'Admin access';
+    wireAdminGate();
+    return;
+  }
+
+  const savedToken = localStorage.getItem(STORAGE_KEY);
+  if (savedToken){
+    $('status-line').textContent = 'Loading your page...';
+    await loadMyPage(savedToken);
+    return;
+  }
+
+  const res = await apiGet('home');
+  const { config, bulletin } = res.data || {};
+  $('event-name').textContent = (config && config.EventName) || 'Monito Monita';
+  $('status-line').textContent = (config && config.DrawStatus === 'drawn')
+    ? 'Names have been drawn — log in to see who you got!'
+    : 'Create an account, then wait for the draw.';
+  show('view-home');
+  wireHome();
+  renderBulletin(bulletin || [], 'bulletin-list');
+}
+
+function goHome(){
+  localStorage.removeItem(STORAGE_KEY);
+  hide('view-mypage');
+  location.search = '';
+}
+
+/* ---------------- HOME / AUTH ---------------- */
+let authMode = 'signup';
+
+function switchAuthTab(mode){
+  authMode = mode;
+  $('tab-signup').classList.toggle('active', mode === 'signup');
+  $('tab-login').classList.toggle('active', mode === 'login');
+  $('auth-passcode-label').textContent = mode === 'signup'
+    ? 'Create a passcode (min 4 characters)'
+    : 'Passcode';
+  $('auth-submit-btn').textContent = mode === 'signup' ? 'Create account' : 'Log in';
+  $('auth-msg').textContent = '';
+}
+
+function wireHome(){
+  $('auth-submit-btn').addEventListener('click', async () => {
+    const codename = $('auth-username').value.trim();
+    const passcode = $('auth-passcode').value;
+    const msg = $('auth-msg');
+    msg.textContent = '';
+
+    if (!codename){ msg.textContent = 'Enter a username.'; msg.className='msg error'; return; }
+    if (!passcode){ msg.textContent = 'Enter a passcode.'; msg.className='msg error'; return; }
+
+    $('auth-submit-btn').disabled = true;
+    const res = await apiPost(authMode, { codename, passcode });
+    $('auth-submit-btn').disabled = false;
+
+    if (!res.success){ msg.textContent = res.data.error; msg.className = 'msg error'; return; }
+
+    localStorage.setItem(STORAGE_KEY, res.data.sessionToken);
+    msg.textContent = authMode === 'signup' ? 'Account created!' : 'Welcome back!';
+    msg.className = 'msg ok';
+    setTimeout(() => loadMyPage(res.data.sessionToken), 400);
+  });
+}
+
+/* ---------------- MY PAGE ---------------- */
+async function loadMyPage(sessionToken){
+  const res = await apiGet('mypage', { sessionToken });
+  if (!res.success){
+    localStorage.removeItem(STORAGE_KEY);
+    $('status-line').textContent = (res.data && res.data.error) || 'Please log in again.';
+    show('view-home');
+    wireHome();
+    apiGet('home').then(r => renderBulletin((r.data && r.data.bulletin) || [], 'bulletin-list'));
+    return;
+  }
+  hide('view-home');
+  const p = res.data.participant;
+  const bulletinData = res.data.bulletin || [];
+
+  show('view-mypage');
+  $('mypage-greeting').textContent = `Hey, ${p.codename} 🎁`;
+  $('wishlist-input').value = p.wishlist || '';
+
+  if (p.drawn){
+    if (p.match){
+      show('reveal-open');
+      $('match-name').textContent = p.match.codename;
+      if (p.match.wishlist){
+        show('match-wishlist-box');
+        $('match-wishlist').textContent = p.match.wishlist;
+      }
+    }
+    $('wishlist-input').disabled = true;
+    $('save-wishlist-btn').disabled = true;
+    $('save-wishlist-btn').textContent = 'Locked after draw';
+  } else {
+    show('reveal-locked');
+    $('save-wishlist-btn').addEventListener('click', async () => {
+      const msg = $('wishlist-msg');
+      $('save-wishlist-btn').disabled = true;
+      const r = await apiPost('update_wishlist', { sessionToken, wishlist: $('wishlist-input').value });
+      $('save-wishlist-btn').disabled = false;
+      if (!r.success){ msg.textContent = r.data.error; msg.className = 'msg error'; return; }
+      msg.textContent = 'Saved!';
+      msg.className = 'msg ok';
+      setTimeout(() => msg.textContent = '', 2000);
+    });
+  }
+
+  renderBulletin(bulletinData, 'bulletin-list-2');
+}
+
+/* ---------------- ADMIN ---------------- */
+function wireAdminGate(){
+  $('admin-login-btn').addEventListener('click', async () => {
+    const passcode = $('passcode-input').value;
+    const res = await apiGet('admin_list', { passcode });
+    if (!res.success){
+      $('admin-login-msg').textContent = res.data.error;
+      $('admin-login-msg').className = 'msg error';
+      return;
+    }
+    ADMIN_PASSCODE = passcode;
+    hide('view-admin-gate');
+    show('view-admin');
+    renderAdmin(res.data);
+    renderAdminBulletin(res.data.bulletin || []);
+    wireAdmin();
+  });
+}
+
+function renderAdmin(data){
+  const { participants, config } = data;
+  $('participant-count').textContent = participants.length;
+  const drawn = config.DrawStatus === 'drawn';
+  $('admin-draw-status').textContent = drawn
+    ? `Names have been drawn (${participants.length} participants).`
+    : `Not drawn yet — ${participants.length} people signed up so far. Need at least 3.`;
+  $('draw-btn').disabled = drawn || participants.length < 3;
+  $('reset-draw-btn').disabled = !drawn;
+
+  if (!participants.length){
+    $('admin-participants').innerHTML = '<div class="empty">No one has joined yet.</div>';
+  } else {
+    $('admin-participants').innerHTML = participants.map(p => `
+      <div class="admin-row">
+        <div>
+          <div class="name">${escapeHtml(p.codename)}</div>
+          ${p.wishlist ? `<div class="wish">${escapeHtml(p.wishlist)}</div>` : ''}
+          ${p.assignedTo ? `<div class="arrow">→ giving to ${escapeHtml(p.assignedTo)}</div>` : ''}
+        </div>
+        <button class="btn ghost" data-remove="${escapeHtml(p.codename)}" style="padding:6px 12px; font-size:13px;">Remove</button>
+      </div>
+    `).join('');
+    document.querySelectorAll('[data-remove]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm(`Remove ${btn.dataset.remove}?`)) return;
+        await apiPost('admin_remove_participant', { passcode: ADMIN_PASSCODE, codename: btn.dataset.remove });
+        refreshAdmin();
+      });
+    });
+  }
+}
+
+async function refreshAdmin(){
+  const res = await apiGet('admin_list', { passcode: ADMIN_PASSCODE });
+  if (res.success) renderAdmin(res.data);
+}
+
+function renderAdminBulletin(items){
+  const el = $('admin-bulletin-list');
+  if (!items.length){ el.innerHTML = '<div class="empty">Nothing posted yet.</div>'; return; }
+  el.innerHTML = items.map(b => `
+    <div class="admin-row">
+      <div>
+        <p style="margin:0;">${escapeHtml(b.message)}</p>
+        <div class="meta" style="margin-top:4px;">${formatDate(b.date)}</div>
+      </div>
+      <button class="btn ghost" data-del="${b.rowIndex}" style="padding:6px 12px; font-size:13px;">Delete</button>
+    </div>
+  `).join('');
+  document.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await apiPost('admin_delete_bulletin', { passcode: ADMIN_PASSCODE, rowIndex: Number(btn.dataset.del) });
+      loadAdminBulletin();
+    });
+  });
+}
+
+function wireAdmin(){
+  $('draw-btn').addEventListener('click', async () => {
+    if (!confirm('Draw names now? This locks everyone\'s wishlist.')) return;
+    $('draw-btn').disabled = true;
+    const res = await apiPost('admin_draw', { passcode: ADMIN_PASSCODE });
+    if (!res.success){
+      $('draw-msg').textContent = res.data.error;
+      $('draw-msg').className = 'msg error';
+      $('draw-btn').disabled = false;
+      return;
+    }
+    $('draw-msg').textContent = `Drew ${res.data.count} names!`;
+    $('draw-msg').className = 'msg ok';
+    refreshAdmin();
+  });
+
+  $('reset-draw-btn').addEventListener('click', async () => {
+    if (!confirm('Reset the draw? Everyone\'s match will be cleared and wishlists unlocked.')) return;
+    await apiPost('admin_reset_draw', { passcode: ADMIN_PASSCODE });
+    refreshAdmin();
+  });
+
+  $('post-bulletin-btn').addEventListener('click', async () => {
+    const message = $('bulletin-input').value.trim();
+    if (!message) return;
+    $('post-bulletin-btn').disabled = true;
+    const res = await apiPost('admin_post_bulletin', { passcode: ADMIN_PASSCODE, message });
+    $('post-bulletin-btn').disabled = false;
+    if (!res.success){
+      $('bulletin-admin-msg').textContent = res.data.error;
+      $('bulletin-admin-msg').className = 'msg error';
+      return;
+    }
+    $('bulletin-input').value = '';
+    loadAdminBulletin();
+  });
+}
+
+async function loadAdminBulletin(){
+  const res = await apiGet('bulletin');
+  renderAdminBulletin(res.data || []);
+}
+
+init();
+</script>
+</body>
+</html>
